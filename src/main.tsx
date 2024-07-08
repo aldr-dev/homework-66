@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.min.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
  <BrowserRouter>
-   <ToastContainer />
+   <ToastContainer position="top-right" theme="colored"/>
    <App/>
  </BrowserRouter>
 );
