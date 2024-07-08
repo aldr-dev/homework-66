@@ -8,7 +8,7 @@ import './MealForm.css';
 
 const MealForm = () => {
   const {id} = useParams();
-  const [meal, setMeal] = useState({
+  const [data, setData] = useState<ApiMealForm>({
     category: '',
     description: '',
     calories: '',
@@ -26,23 +26,23 @@ const MealForm = () => {
           setIsLoaderGet(false);
 
           if (response.status !== 200) {
-            toast.error('An error has occurred. Failed to process information');
+            toast.error('An error has occurred. Failed to process information.');
             throw new Error('An error has occurred. Failed to process information. ' + response.status);
           }
 
           if (response.data !== null) {
-            setMeal((prevState) => {
+            setData((prevState) => {
               return {
                 ...prevState,
-                calories: response.data.category,
-                description: response.data.description,
                 category: response.data.category,
+                description: response.data.description,
+                calories: response.data.calories,
               };
             });
           }
         } catch (error) {
           setIsLoaderGet(false);
-          toast.error('An error has occurred. Failed to process information');
+          toast.error('An error has occurred. Failed to process information.');
           console.error('An error has occurred. Failed to process information. ' + error);
         }
       };
@@ -52,7 +52,7 @@ const MealForm = () => {
 
   const onFieldChange = (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const {name, value} = event.target;
-    setMeal((prevState) => {
+    setData((prevState) => {
       return {
         ...prevState,
         [name]: value,
@@ -63,29 +63,29 @@ const MealForm = () => {
   const onFormSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (meal.calories.length !== 0 && meal.description.length !== 0 && meal.calories.length !== 0) {
+    if (data.calories.length !== 0 && data.description.length !== 0 && data.calories.length !== 0) {
       try {
         setIsLoaderUpdate(true);
         let response;
         if (id) {
-          response = await axiosApi.put<ApiMealForm>(`/meals/${id}.json`, meal);
+          response = await axiosApi.put<ApiMealForm>(`/meals/${id}.json`, data);
           toast.success('Meal data was successfully updated.');
         } else {
-          setMeal({category: '', description: '', calories: '',});
-          response = await axiosApi.post<ApiMealForm>('/meals.json', meal);
+          setData({category: '', description: '', calories: '',});
+          response = await axiosApi.post<ApiMealForm>('/meals.json', data);
           navigate('/');
           toast.success('Food data has been added successfully.');
         }
         setIsLoaderUpdate(false);
 
         if (response.status !== 200) {
-          toast.error('An error has occurred. Failed to process information');
+          toast.error('An error has occurred. Failed to process information.');
           throw new Error('An error has occurred. Failed to process information. ' + response.status);
         }
 
       } catch (error) {
         setIsLoaderUpdate(false);
-        toast.error('An error has occurred. Failed to process information');
+        toast.error('An error has occurred. Failed to process information.');
         console.error('An error has occurred. Failed to process information. ' + error);
       }
     }
@@ -101,21 +101,21 @@ const MealForm = () => {
           <select
             onChange={onFieldChange}
             id="category"
-            value={meal.category}
+            value={data.category}
             className="form-select"
             name="category"
             required>
             <option value="">Select Category</option>
-            <option value="breakfast">Breakfast</option>
-            <option value="snack">Snack</option>
-            <option value="lunch">Lunch</option>
-            <option value="dinner">Dinner</option>
+            <option value="Breakfast">Breakfast</option>
+            <option value="Snack">Snack</option>
+            <option value="Lunch">Lunch</option>
+            <option value="Dinner">Dinner</option>
           </select>
           <label htmlFor="description">Meal Description:</label>
           <textarea
             onChange={onFieldChange}
             id="description"
-            value={meal.description}
+            value={data.description}
             className="form-description"
             name="description"
             placeholder="Meal Description"
@@ -125,7 +125,7 @@ const MealForm = () => {
           <input
             onChange={onFieldChange}
             id="calories"
-            value={meal.calories}
+            value={data.calories}
             className="form-input"
             type="number"
             name="calories"

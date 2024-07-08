@@ -1,0 +1,21 @@
+.total-calories-inner {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.btn-add-meal {
+  display: inline-block;
+  margin-left: auto;
+  text-decoration: none;
+  background: #2c5898;
+  color: #fff;
+  border-radius: 5px;
+  padding: 8px 10px;
+  transition: .2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-add-meal:hover {
+  background: #174173;
+}

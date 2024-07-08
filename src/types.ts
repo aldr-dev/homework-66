@@ -4,6 +4,6 @@ export interface ApiMealForm {
   calories: string;
 }
 
-export interface ApiMeal {
-  [id: string]: ApiMealForm;
+export interface ApiMeal extends ApiMealForm{
+  id: string;
 }
